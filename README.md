@@ -21,11 +21,12 @@ $ dondur
 This will generate `.dondur.lock` file in your package's directory. Go ahead and commit this lock file to your source control system. Here is the lock file generated for this package.
 
 ```
-go/build - 6bafdddbfd6866b8482608e7708d139d309f40eb
-io/ioutil - 6bafdddbfd6866b8482608e7708d139d309f40eb
-os - 6bafdddbfd6866b8482608e7708d139d309f40eb
-os/exec - 6bafdddbfd6866b8482608e7708d139d309f40eb
-strings - 6bafdddbfd6866b8482608e7708d139d309f40eb
+6bafdddbfd6866b8482608e7708d139d309f40eb flag
+6bafdddbfd6866b8482608e7708d139d309f40eb go/build
+6bafdddbfd6866b8482608e7708d139d309f40eb io/ioutil
+6bafdddbfd6866b8482608e7708d139d309f40eb os
+6bafdddbfd6866b8482608e7708d139d309f40eb os/exec
+6bafdddbfd6866b8482608e7708d139d309f40eb strings
 ```
 
 Use this lock file to keep track of the dependencies. You don't need this lock file to compile your package, instead if your build fails for any reason you can use this file to compare the packages.
@@ -41,7 +42,7 @@ $ dondur -x
 This is the `.dondur.lock` file generated with the `-x` flag for [socketio go package](http://google.com).
 
 ```
-code.google.com/p/go.net/websocket - 4e0dc83f5a857e4d4f9455d1073eff284fdee117
+4e0dc83f5a857e4d4f9455d1073eff284fdee117 code.google.com/p/go.net/websocket
 ```
 
 ## Specs
@@ -49,7 +50,7 @@ code.google.com/p/go.net/websocket - 4e0dc83f5a857e4d4f9455d1073eff284fdee117
 `.dondur.lock` file is list of the packages imported by the project in the following format:
 
 ```
-[ package name ] - [ git/hg commit hash ]
+[git/hg commit hash] [package name]
 ```
 
 *External* packages have `.` in the first part of their import paths'. For example:

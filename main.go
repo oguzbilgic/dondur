@@ -21,7 +21,7 @@ func main() {
 		pkgHash := packageHash(pkgName, build.Default.SrcDirs())
 
 		if !*externalOnly || (*externalOnly && packageExternal(pkgName)) {
-			lockFile += pkgName + " - " + pkgHash + "\n"
+			lockFile += pkgHash + " " + pkgName + "\n"
 		}
 	}
 	ioutil.WriteFile(".dondur.lock", []byte(lockFile), os.ModePerm)
