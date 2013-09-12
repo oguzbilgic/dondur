@@ -29,7 +29,7 @@ This will generate `.dondur.lock` file in your package's directory. Go ahead and
 6bafdddbfd6866b8482608e7708d139d309f40eb strings
 ```
 
-Use this lock file to keep track of the dependencies. You don't need this lock file to compile your package, instead if your build fails for any reason you can use this file to compare the packages.
+Use this lock file to keep track of the dependencies. You don't need this lock file to compile your package, instead if your build fails for any reason you can use this file to compare the packages. [This](https://gist.github.com/oguzbilgic/a07ca257ac2af2f5c602) is a `.dondur.lock` generated for the [docker](https://github.com/dotcloud/docker) project.
 
 #### External only mode
 
@@ -39,10 +39,14 @@ You can also use `-x` flag to just list the external packages.
 $ dondur -x
 ```
 
-This is the `.dondur.lock` file generated with the `-x` flag for [socketio go package](http://google.com).
+This is the `.dondur.lock` file generated with the `-x` flag for [revel](http://github.com/robfig/revel).
 
 ```
 4e0dc83f5a857e4d4f9455d1073eff284fdee117 code.google.com/p/go.net/websocket
+08040c5a90632bd721465eb8ad74a8e61bd7bf95 github.com/howeyc/fsnotify
+575cf31a8347a7889030f1f7fc4771be7dcd06fd github.com/robfig/config
+f47995fbd5755034e17de0856f3eecfd2eff894f github.com/robfig/pathtree
+6617b501e485b77e61b98cd533aefff9e258b5a7 github.com/streadway/simpleuuid
 ```
 
 ## Specs
