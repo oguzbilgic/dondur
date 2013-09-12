@@ -17,11 +17,11 @@ func main() {
 	pkg, _ := build.ImportDir(workingDir, build.AllowBinary)
 
 	var lockFile string
-	for _, dependency := range pkg.Imports {
-		packageHash := packageHash(dependency, build.Default.SrcDirs())
+	for _, pkgName := range pkg.Imports {
+		pkgHash := packageHash(pkgName, build.Default.SrcDirs())
 
-		if !*externalOnly || (*externalOnly && packageExternal(dependency)) {
-			lockFile += dependency + " - " + packageHash + "\n"
+		if !*externalOnly || (*externalOnly && packageExternal(pkgName)) {
+			lockFile += pkgName + " - " + pkgHash + "\n"
 		}
 	}
 	ioutil.WriteFile(".dondur.lock", []byte(lockFile), os.ModePerm)
@@ -30,29 +30,29 @@ func main() {
 }
 
 func packageHash(pkgName string, srcDirs []string) string {
-	packageDir := packageDir(pkgName, srcDirs)
+	pkgDir := packageDir(pkgName, srcDirs)
 
 	gitHashCmd := exec.Command("git", "rev-parse", "--verify", "HEAD")
-	gitHashCmd.Dir = packageDir
+	gitHashCmd.Dir = pkgDir
 	gitHash, err := gitHashCmd.Output()
 	if err == nil {
 		return strings.Trim(string(gitHash), "\n")
 	}
 
 	hgHashCmd := exec.Command("hg", "id", "-i")
-	hgHashCmd.Dir = packageDir
+	hgHashCmd.Dir = pkgDir
 	hgHash, err := hgHashCmd.Output()
 	if err == nil {
-		return strings.Trim(string(hgHash), "\n")
+		return strings.TrimSpace(string(hgHash))
 	}
 
 	return "?"
 }
 
-func packageDir(pkg string, srcDirs []string) string {
+func packageDir(pkgName string, srcDirs []string) string {
 	for _, srcDir := range srcDirs {
-		if packageInDir(pkg, srcDir) {
-			return srcDir + "/" + pkg
+		if packageInDir(pkgName, srcDir) {
+			return srcDir + "/" + pkgName
 		}
 	}
 	return ""
@@ -67,8 +67,8 @@ func packageExternal(pkgName string) bool {
 }
 
 func packageInDir(pkgName string, srcDir string) bool {
-	pkg, _ := build.ImportDir(srcDir+"/"+pkgName, build.AllowBinary)
-	if pkg.Name == "" {
+	_, err := build.ImportDir(srcDir+"/"+pkgName, build.AllowBinary)
+	if err != nil {
 		return false
 	}
 	return true
