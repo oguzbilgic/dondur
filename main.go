@@ -39,7 +39,7 @@ func packageHash(pkgName string, srcDirs []string) string {
 		return strings.Trim(string(gitHash), "\n")
 	}
 
-	hgHashCmd := exec.Command("hg", "id", "-i")
+	hgHashCmd := exec.Command("hg", "--debug", "id", "-i")
 	hgHashCmd.Dir = pkgDir
 	hgHash, err := hgHashCmd.Output()
 	if err == nil {

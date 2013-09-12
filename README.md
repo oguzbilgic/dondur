@@ -41,7 +41,7 @@ $ dondur -x
 This is the `.dondur.lock` file generated with the `-x` flag for [socketio go package](http://google.com).
 
 ```
-code.google.com/p/go.net/websocket - 4e0dc83f5a85
+code.google.com/p/go.net/websocket - 4e0dc83f5a857e4d4f9455d1073eff284fdee117
 ```
 
 ## Specs
