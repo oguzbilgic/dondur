@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"go/build"
 	"io/ioutil"
 	"os"
@@ -9,13 +10,19 @@ import (
 )
 
 func main() {
+	externalOnly := flag.Bool("x", false, "List only the external dependencies")
+	flag.Parse()
+
 	workingDir, _ := os.Getwd()
 	pkg, _ := build.ImportDir(workingDir, build.AllowBinary)
 
 	var lockFile string
 	for _, dependency := range pkg.Imports {
 		packageHash := packageHash(dependency, build.Default.SrcDirs())
-		lockFile += dependency + " - " + packageHash + "\n"
+
+		if !*externalOnly || (*externalOnly && packageExternal(dependency)) {
+			lockFile += dependency + " - " + packageHash + "\n"
+		}
 	}
 	ioutil.WriteFile(".dondur.lock", []byte(lockFile), os.ModePerm)
 
@@ -49,6 +56,14 @@ func packageDir(pkg string, srcDirs []string) string {
 		}
 	}
 	return ""
+}
+
+func packageExternal(pkgName string) bool {
+	pkgNameParts := strings.Split(pkgName, "/")
+	if strings.Contains(pkgNameParts[0], ".") {
+		return true
+	}
+	return false
 }
 
 func packageInDir(pkgName string, srcDir string) bool {
