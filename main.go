@@ -4,6 +4,7 @@ import (
 	"flag"
 	"go/build"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -13,8 +14,15 @@ func main() {
 	externalOnly := flag.Bool("x", false, "List only the external dependencies")
 	flag.Parse()
 
-	workingDir, _ := os.Getwd()
-	pkg, _ := build.ImportDir(workingDir, build.AllowBinary)
+	workingDir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	pkg, err := build.ImportDir(workingDir, build.AllowBinary)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	var lockFile string
 	for _, pkgName := range pkg.Imports {
