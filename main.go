@@ -18,7 +18,8 @@ func main() {
 
 	var lockFile string
 	for _, pkgName := range pkg.Imports {
-		pkgHash := packageHash(pkgName, build.Default.SrcDirs())
+		pkgDir := packageDir(pkgName, build.Default.SrcDirs())
+		pkgHash := packageHash(pkgDir)
 
 		if !*externalOnly || (*externalOnly && packageExternal(pkgName)) {
 			lockFile += pkgHash + " " + pkgName + "\n"
@@ -29,9 +30,7 @@ func main() {
 	print(lockFile)
 }
 
-func packageHash(pkgName string, srcDirs []string) string {
-	pkgDir := packageDir(pkgName, srcDirs)
-
+func packageHash(pkgDir string) string {
 	gitHashCmd := exec.Command("git", "rev-parse", "--verify", "HEAD")
 	gitHashCmd.Dir = pkgDir
 	gitHash, err := gitHashCmd.Output()
